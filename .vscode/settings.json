@@ -1,0 +1,18 @@
+{
+    "arduino.path": "C:/Program Files (x86)/Arduino",
+    "arduino.commandPath": "arduino_debug.exe",
+    "arduino.logLevel": "info",
+    "arduino.enableUSBDetection": true,
+    "arduino.disableTestingOpen": false,
+    "arduino.skipHeaderProvider": false,
+    "arduino.useArduinoCli": false,
+    "arduino.allowPDEFiletype": false,
+    "arduino.enableArduinoF1Support": false,
+    "arduino.disableIntelliSenseAutoGen": false,
+    "arduino.disableTestingOpen": false,
+    "arduino.skipHeaderProvider": false,
+    "arduino.useArduinoCli": false,
+    "arduino.allowPDEFiletype": false,
+    "arduino.enableArduinoF1Support": false,
+    "arduino.disableIntelliSenseAutoGen": false
+} 

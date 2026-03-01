@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Arduino",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino",
+                "C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/**",
+                "C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/standard",
+                "C:/Program Files (x86)/Arduino/libraries/**",
+                "C:/Users/dangr/AppData/Local/Arduino15/packages/arduino/hardware/avr/*/cores/arduino",
+                "C:/Users/dangr/AppData/Local/Arduino15/packages/arduino/hardware/avr/*/libraries/**"
+            ],
+            "defines": [
+                "ARDUINO=10800",
+                "USBCON",
+                "ARDUINO_ARCH_AVR"
+            ],
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "C:/Program Files (x86)/Arduino/hardware/tools/avr/bin/avr-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++11"
+        }
+    ],
+    "version": 4
+} 

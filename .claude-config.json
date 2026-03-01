@@ -1,0 +1,6 @@
+{
+  "mandatory_requirements": {
+    "read_me_first": "README-AI.md",
+    "instruction": "YOU MUST READ README-AI.md COMPLETELY BEFORE WRITING ANY CODE. ALL project instructions, architecture details, coding standards, and development guidelines are contained in README-AI.md. NO EXCEPTIONS."
+  }
+}
