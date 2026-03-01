@@ -29,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added sleeping behavior to behavior system and switch statements
 - Modified initializeBehavior() to include sleeping behavior initialization
 - Updated README-AI.md with sleeping behavior documentation
-- Set sleeping behavior as default startup behavior in eyes-v0.1.ino
+- Set sleeping behavior as default startup behavior in pumpkin-eyes.ino
 - Added BEHAVIOR_MOUTH_INVASION to behavior enum in Globals.h
 - Updated behavior system to support mouth invasion behavior
 - Modified initializeBehavior() to include mouth invasion behavior initialization

@@ -33,7 +33,7 @@ const unsigned long SENSOR_CHECK_INTERVAL = 50;  // Check every 50ms
 
 // Hand detection timing
 unsigned long lowStateStartTime = 0;  // When sensor went LOW
-const unsigned long HAND_LEFT_DURATION = 500;  // 500ms LOW = hand left
+const unsigned long HAND_LEFT_DURATION = 8000;  // 8 seconds HIGH = hand left (wait before post invasion)
 bool handLeftMessageSent = false;  // Prevent spamming message
 bool behaviorTriggeredForHandIn = false;  // Track if we've triggered mouth invasion
 bool behaviorTriggeredForHandOut = false;  // Track if we've triggered post invasion
@@ -97,7 +97,7 @@ void loopMovementSensor() {
       handLeftMessageSent = false;  // Reset message flag
     }
     
-    // Check if HIGH (no motion) has persisted for 500ms (hand left mouth)
+    // Check if HIGH (no motion) has persisted for 3 seconds (hand left mouth)
     if (sensorValue && lowStateStartTime > 0 && !handLeftMessageSent) {
       if (currentTime - lowStateStartTime >= HAND_LEFT_DURATION) {
         Serial.println("HAND LEFT MOUTH");

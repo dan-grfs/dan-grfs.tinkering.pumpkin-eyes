@@ -40,7 +40,7 @@ An Arduino-based animatronic eyes system inspired by Will Cogley's design. This 
 2. **Compile & Upload**: Use Arduino IDE to compile and upload to your Arduino Nano, or use Arduino CLI commands
 3. **Connect Servos**: Wire the servos according to the pin mapping above
 4. **Power Up**: Connect external power supply if using multiple servos
-5. **Watch the Magic**: The eyes will start with sleepy behavior and automatically cycle through different personalities
+5. **Watch the Magic**: The eyes will start with the default behavior (currently IDLE) and can be configured to cycle through different personalities
 6. **Debug**: Open Serial Monitor at 9600 baud to see debug output
 
 ### Arduino CLI (Alternative to Arduino IDE)

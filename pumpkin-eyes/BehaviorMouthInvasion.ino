@@ -15,16 +15,31 @@ MouthInvasionState currentMouthInvasionState = MOUTH_INVASION_ENTRY;
 unsigned long mouthInvasionStateStartTime = 0;
 unsigned long mouthInvasionLastActionTime = 0;
 
-// Timing constants for mouth invasion behavior
-const unsigned long STATE_DURATION_SURPRISED = 2000;        // 2 seconds surprised
-const unsigned long STATE_DURATION_LOOK_FORWARD = 1000;     // 1 second look forward
-const unsigned long STATE_DURATION_SHUFFLING_MIN = 1500;    // 1.5 seconds minimum shuffling
-const unsigned long STATE_DURATION_SHUFFLING_MAX = 2500;    // 2.5 seconds maximum shuffling
-const unsigned long STATE_DURATION_INVITING = 2000;         // 1 second inviting
-const unsigned long STATE_DURATION_QUICK_LOOK = 1000;       // 1 second quick look
-const unsigned long ACTION_INTERVAL_TWITCH = 300;           // Twitch every 300ms
-const unsigned long ACTION_INTERVAL_SHUFFLE = 400;          // Shuffle every 400ms
-const unsigned long ACTION_INTERVAL_RANDOM = 1000;          // Random action every 2s
+// Speed multiplier for mouth invasion behavior (1.0 = normal, <1.0 = faster, >1.0 = slower)
+// Adjust this to make all actions quicker or slower proportionally
+const float MOUTH_INVASION_SPEED_MULTIPLIER = 0.5;  // 0.5 = 50% faster (actions happen 30% more frequently)
+
+// Base timing constants for mouth invasion behavior (will be scaled by speed multiplier)
+const unsigned long BASE_STATE_DURATION_SURPRISED = 2000;        // 2 seconds surprised
+const unsigned long BASE_STATE_DURATION_LOOK_FORWARD = 1000;     // 1 second look forward
+const unsigned long BASE_STATE_DURATION_SHUFFLING_MIN = 1500;    // 1.5 seconds minimum shuffling
+const unsigned long BASE_STATE_DURATION_SHUFFLING_MAX = 2500;    // 2.5 seconds maximum shuffling
+const unsigned long BASE_STATE_DURATION_INVITING = 2000;         // 2 seconds inviting
+const unsigned long BASE_STATE_DURATION_QUICK_LOOK = 1000;       // 1 second quick look
+const unsigned long BASE_ACTION_INTERVAL_TWITCH = 300;           // Twitch every 300ms
+const unsigned long BASE_ACTION_INTERVAL_SHUFFLE = 400;          // Shuffle every 400ms
+const unsigned long BASE_ACTION_INTERVAL_RANDOM = 1000;          // Random action every 1s
+
+// Scaled timing constants (calculated from base values and speed multiplier)
+const unsigned long STATE_DURATION_SURPRISED = (unsigned long)(BASE_STATE_DURATION_SURPRISED * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long STATE_DURATION_LOOK_FORWARD = (unsigned long)(BASE_STATE_DURATION_LOOK_FORWARD * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long STATE_DURATION_SHUFFLING_MIN = (unsigned long)(BASE_STATE_DURATION_SHUFFLING_MIN * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long STATE_DURATION_SHUFFLING_MAX = (unsigned long)(BASE_STATE_DURATION_SHUFFLING_MAX * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long STATE_DURATION_INVITING = (unsigned long)(BASE_STATE_DURATION_INVITING * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long STATE_DURATION_QUICK_LOOK = (unsigned long)(BASE_STATE_DURATION_QUICK_LOOK * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long ACTION_INTERVAL_TWITCH = (unsigned long)(BASE_ACTION_INTERVAL_TWITCH * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long ACTION_INTERVAL_SHUFFLE = (unsigned long)(BASE_ACTION_INTERVAL_SHUFFLE * MOUTH_INVASION_SPEED_MULTIPLIER);
+const unsigned long ACTION_INTERVAL_RANDOM = (unsigned long)(BASE_ACTION_INTERVAL_RANDOM * MOUTH_INVASION_SPEED_MULTIPLIER);
 
 // Sequence action index for tracking
 uint8_t mouthInvasionSequenceIndex = 0;
@@ -84,7 +99,7 @@ void initializeMouthInvasionBehavior() {
   mouthInvasionRandomActionCounter = 0;
   
   // Set smooth movement speed for mouth invasion behavior
-  setSmoothMovementSpeed(9);
+  setSmoothMovementSpeed(20);
   
   // Start with eyes open and looking forward
   OpenLookForward();
@@ -94,8 +109,9 @@ void initializeMouthInvasionBehavior() {
  * Perform entry state - brief pause before surprised reaction
  */
 void performEntryState(unsigned long currentTime) {
-  // Quick transition to surprised state
-  if (currentTime - mouthInvasionStateStartTime >= 200) {  // Brief 200ms entry
+  // Quick transition to surprised state (scaled by speed multiplier)
+  unsigned long entryDuration = (unsigned long)(200 * MOUTH_INVASION_SPEED_MULTIPLIER);
+  if (currentTime - mouthInvasionStateStartTime >= entryDuration) {
     transitionToMouthInvasionState(MOUTH_INVASION_SURPRISED);
   }
 }
@@ -181,8 +197,9 @@ void performInvitingState(unsigned long currentTime) {
     mouthInvasionLastActionTime = currentTime;
   }
   
-  // Inviting eyelid twitch (softer than surprised)
-  if (currentTime - mouthInvasionLastActionTime >= 500) {
+  // Inviting eyelid twitch (softer than surprised) - scaled by speed multiplier
+  unsigned long twitchInterval = (unsigned long)(500 * MOUTH_INVASION_SPEED_MULTIPLIER);
+  if (currentTime - mouthInvasionLastActionTime >= twitchInterval) {
     mouthInvasionLastActionTime = currentTime;
     eyelidTwitch(8, 300);  // Gentle twitch
   }
@@ -199,16 +216,21 @@ void performInvitingState(unsigned long currentTime) {
  * Perform quick look state - quick down/up/forward sequence
  */
 void performQuickLookState(unsigned long currentTime) {
-  // Quick sequence: down -> forward -> twitch
-  if (currentTime - mouthInvasionStateStartTime < 300 && mouthInvasionLastActionTime == 0) {
+  // Quick sequence: down -> forward -> twitch (timings scaled by speed multiplier)
+  unsigned long quickLookDownTime = (unsigned long)(300 * MOUTH_INVASION_SPEED_MULTIPLIER);
+  unsigned long quickLookForwardTime = (unsigned long)(300 * MOUTH_INVASION_SPEED_MULTIPLIER);
+  unsigned long quickLookTotalTime = (unsigned long)(600 * MOUTH_INVASION_SPEED_MULTIPLIER);
+  unsigned long quickLookTwitchDelay = (unsigned long)(200 * MOUTH_INVASION_SPEED_MULTIPLIER);
+  
+  if (currentTime - mouthInvasionStateStartTime < quickLookDownTime && mouthInvasionLastActionTime == 0) {
     // Quick look down
     moveEyeTo(0.0, 0.6);
     mouthInvasionLastActionTime = currentTime;
-  } else if (currentTime - mouthInvasionStateStartTime >= 300 && currentTime - mouthInvasionLastActionTime >= 300) {
+  } else if (currentTime - mouthInvasionStateStartTime >= quickLookDownTime && currentTime - mouthInvasionLastActionTime >= quickLookForwardTime) {
     // Quick look forward
     moveEyeTo(0.0, 0.0);
     mouthInvasionLastActionTime = currentTime;
-  } else if (currentTime - mouthInvasionStateStartTime >= 600 && currentTime - mouthInvasionLastActionTime >= 200) {
+  } else if (currentTime - mouthInvasionStateStartTime >= quickLookTotalTime && currentTime - mouthInvasionLastActionTime >= quickLookTwitchDelay) {
     // Final twitch
     eyelidTwitch(10, 200);
     mouthInvasionLastActionTime = currentTime;

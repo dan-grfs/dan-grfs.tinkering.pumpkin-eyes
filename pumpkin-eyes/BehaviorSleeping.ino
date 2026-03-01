@@ -81,7 +81,7 @@ void initializeSleepingBehavior() {
   isSlowBlinkClosed = false;
   
   // Set smooth movement speed for sleepy behavior (slower for tired effect)
-  setSmoothMovementSpeed(3);
+  setSmoothMovementSpeed(6);
   
   // Start with eyes open and looking forward
   OpenLookForward();

@@ -230,12 +230,12 @@ This is an Arduino Nano-based animatronic eyes system that controls 6 servo moto
    - Timing management
 
 5. **Behavior Implementations**
+   - `BehaviorSleepy.ino`: Sleepy behavior with droopy eyelids
    - `BehaviorTesting.ino`: Comprehensive test sequences
+   - `BehaviorPumpkin.ino`: Pumpkin behavior with sequence-based states
    - `BehaviorMouthInvasion.ino`: Mouth invasion behavior triggered when someone reaches into mouth
    - `BehaviorSleeping.ino`: Sleeping behavior with tired blinking, half-closed eyes, slow blinks, and gradual closing
    - `BehaviorPostInvasion.ino`: Post invasion behavior - calm idle behavior after mouth invasion
-   
-   **Note**: Some behaviors (Sleepy, Pumpkin, Attentive, Surprised, Curious, Playful) are defined in the enum but their implementation files have been removed or are disabled to save memory on Arduino Nano.
 
 ## Technical Specifications
 
@@ -408,7 +408,7 @@ Currently minimal error handling is implemented. The system assumes:
 2. Add case to `behaviorLoop()` switch statement
 3. Implement handler function
 4. Add initialization logic to `initializeBehavior()`
-5. Create new behavior file following the pattern of `BehaviorMouthInvasion.ino` or `BehaviorPostInvasion.ino` (for simple idle-like behaviors)
+5. Create new behavior file following the pattern of `BehaviorPumpkin.ino`, `BehaviorMouthInvasion.ino`, or `BehaviorPostInvasion.ino` (for simple idle-like behaviors)
 
 ### Adding New Movements
 1. Define function in `BaseMovements.ino`
